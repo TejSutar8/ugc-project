@@ -16,5 +16,19 @@ export interface User {
 export interface Project {
   id: string;
   name?: string;
-  userId?: User;
+  userId?: string;
+  user?: User;
+  productName: string;
+  productDescription?: string;
+  userPrompt?: string;
+  aspectRatio: string;
+  targetLength?: number;
+  generatedImage?: string;
+  generatedVideo?: string;
+  isGenerating: boolean;
+  isPublished: boolean;
+  error?: string;
+  createdAt: Date | string;
+  updatedAt?: Date | string;
+  uploadedImage: string[];
 }
