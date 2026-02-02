@@ -11,7 +11,7 @@ const MyGenerations = () => {
 
   const fetchMyGenerations = async () => {
     setTimeout(() => {
-      setGenerations([]);
+      setGenerations(dummyGenerations);
       setLoading(false);
     }, 3000);
   };
