@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import type { Project } from "../types";
-import { dummyGenerations } from "../assets/assets";
 import {
   ImageIcon,
   VideoIcon,
@@ -10,26 +9,76 @@ import {
   SparkleIcon,
 } from "lucide-react";
 import { GhostButton, PrimaryButton } from "../components/Buttons";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { toast } from "react-hot-toast/headless";
+import api from "../configs/axios";
 
 const Result = () => {
+  const { projectId } = useParams();
+  const { getToken } = useAuth();
+  const { user, isLoaded } = useUser();
+  const navigate = useNavigate();
+
   const [project, setProjectData] = useState<Project>({} as Project);
   const [loading, setLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const fetchProjectData = async () => {
-    setTimeout(() => {
-      setProjectData(dummyGenerations[0]);
-      setLoading(false);
-    }, 3000);
+    try {
+      const token = await getToken();
+      const { data } = await api.get(`/api/user/projects/${projectId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProjectData(data.project);
+      setIsGenerating(false);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+      console.log(error);
+    }
   };
 
   const handleGenerateVideo = async () => {
     setIsGenerating(true);
+    try {
+      const token = await getToken();
+      const { data } = await api.post(
+        "/api/project/video",
+        { projectId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      setProjectData((prev) => ({
+        ...prev,
+        generatedVideo: data.videoUrl,
+        isGenerating: false,
+      }));
+
+      toast.success(data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    fetchProjectData();
-  }, []);
+    if (user && !project.id) {
+      fetchProjectData();
+    } else if (isLoaded && !user) {
+      navigate("/");
+    }
+  }, [user]);
+
+  // Fetch Project every 10 Seconds
+  useEffect(() => {
+    if (user && isGenerating) {
+      const interval = setInterval(() => {
+        fetchProjectData();
+      }, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [user, isGenerating]);
 
   return loading ? (
     <div className="h-screen w-full flex items-center justify-center">

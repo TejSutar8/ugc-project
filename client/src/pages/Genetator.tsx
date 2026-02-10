@@ -8,8 +8,16 @@ import {
   Wand2Icon,
 } from "lucide-react";
 import { PrimaryButton } from "../components/Buttons";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import api from "../configs/axios";
 
 const Genetator = () => {
+  const { user } = useUser();
+  const { getToken } = useAuth();
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
@@ -31,6 +39,32 @@ const Genetator = () => {
 
   const handelGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return toast("Please Login to generate");
+
+    if (!productImage || !modelImage || !name || !productName || !aspectRatio)
+      return toast("Please fill all the required fields");
+    try {
+      setIsGenerating(true);
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("productName", productName);
+      formData.append("productDescription", productDescription);
+      formData.append("userPrompt", userPrompt);
+      formData.append("aspectRatio", aspectRatio);
+      formData.append("Image", productImage);
+      formData.append("Image", modelImage);
+
+      const token = await getToken();
+
+      const { data } = await api.post("/api/project/create", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success(data.message);
+      navigate("result/" + data.projectId);
+    } catch (error: any) {
+      setIsGenerating(false);
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   return (
