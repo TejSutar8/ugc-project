@@ -1,6 +1,6 @@
 import type React from "react";
 import type { Project } from "../types";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   EllipsisIcon,
@@ -53,7 +53,7 @@ const ProjectCard = ({
   const togglePublish = async (projectId: string) => {
     try {
       const token = await getToken();
-      const { data } = await api.get(`/api/user/publish/${projectId}`, {
+      const { data } = await api.post(`/api/user/publish/${projectId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,12 +61,12 @@ const ProjectCard = ({
       setGenerations((generations) =>
         generations.map((gen) =>
           gen.id === projectId
-            ? { ...gen, isPublished: !gen.isPublished }
+            ? { ...gen, isPublished: data.isPublished }
             : gen,
         ),
       );
       toast.success(
-        data.isPublished ? "project published" : "Project unpublished",
+        data.isPublished ? "Project published" : "Project unpublished",
       );
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);
@@ -124,63 +124,76 @@ const ProjectCard = ({
           {/* action menu for my generations only */}
           {!forCommunity && (
             <div
-              onMouseDownCapture={() => {
-                setMenuOpen(true);
-              }}
-              onMouseLeave={() => {
-                setMenuOpen(false);
-              }}
-              className="absolute right-3 top-3 sm:opacity-0 group-hover:opacity-110 transition flex items-center gap-2"
+              className="absolute right-3 top-3 sm:opacity-0 group-hover:opacity-100 transition"
             >
-              <div className="absolute top-3 right-3">
-                <EllipsisIcon className="ml-auto bg-black/10 rounded-full p-1 size-7" />
-              </div>
-              <div className="flex flex-col items-end w-32 text-sm">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                onBlur={() => setTimeout(() => setMenuOpen(false), 200)}
+                className="bg-black/50 backdrop-blur-sm hover:bg-black/70 rounded-full p-1.5 transition-all border border-white/10"
+              >
+                <EllipsisIcon className="size-5 text-white" />
+              </button>
+              
+              {menuOpen && (
                 <ul
-                  className={`text-xs ${menuOpen ? "block" : "hidden"} verflow-hidden right-0 peer-focus:block hover:block w-20 bg-black/50 backdrop-blur text-white border border-gray-500/50 rounded-lg shadow-md mt-2 py-1 z-10`}
+                  className="absolute top-10 right-0 w-44 bg-black/90 backdrop-blur-xl text-white border border-white/20 rounded-lg shadow-xl py-1 z-20"
                 >
                   {gen.generatedImage && (
-                    <a
-                      href="#"
-                      download
-                      className="flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-pointer"
-                    >
-                      <ImageIcon size={14} />
-                      Download Image
-                    </a>
+                    <li>
+                      <a
+                        href={gen.generatedImage}
+                        download={`${gen.productName}-image.png`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex gap-3 items-center px-4 py-2.5 hover:bg-white/10 cursor-pointer transition-colors"
+                      >
+                        <ImageIcon size={16} />
+                        <span className="text-sm">Download Image</span>
+                      </a>
+                    </li>
                   )}
                   {gen.generatedVideo && (
-                    <a
-                      href="#"
-                      download
-                      className="flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-pointer"
-                    >
-                      <PlaySquareIcon size={14} />
-                      Download Video
-                    </a>
+                    <li>
+                      <a
+                        href={gen.generatedVideo}
+                        download={`${gen.productName}-video.mp4`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex gap-3 items-center px-4 py-2.5 hover:bg-white/10 cursor-pointer transition-colors"
+                      >
+                        <PlaySquareIcon size={16} />
+                        <span className="text-sm">Download Video</span>
+                      </a>
+                    </li>
                   )}
                   {(gen.generatedVideo || gen.generatedImage) && (
-                    <button
-                      onClick={() =>
-                        navigator.share({
-                          url: gen.generatedVideo || gen.generatedImage,
-                          title: gen.productName,
-                          text: gen.productDescription,
-                        })
-                      }
-                      className="w-full flex gap-2 items-center px-4 py-2 hover:bg-black/10 cursor-pointer"
-                    >
-                      <Share2Icon size={14} /> Share
-                    </button>
+                    <li>
+                      <button
+                        onClick={() =>
+                          navigator.share({
+                            url: gen.generatedVideo || gen.generatedImage,
+                            title: gen.productName,
+                            text: gen.productDescription,
+                          })
+                        }
+                        className="w-full flex gap-3 items-center px-4 py-2.5 hover:bg-white/10 cursor-pointer transition-colors text-left"
+                      >
+                        <Share2Icon size={16} />
+                        <span className="text-sm">Share</span>
+                      </button>
+                    </li>
                   )}
-                  <button
-                    onClick={() => handleDelete(gen.id)}
-                    className="w-full flex gap-2 items-center px-4 py-2 hover:bg-red-950/10 text-red-400 cursor-pointer"
-                  >
-                    <Trash2Icon size={14} /> Delete
-                  </button>
+                  <li className="border-t border-white/10 mt-1 pt-1">
+                    <button
+                      onClick={() => handleDelete(gen.id)}
+                      className="w-full flex gap-3 items-center px-4 py-2.5 hover:bg-red-500/20 text-red-400 cursor-pointer transition-colors text-left"
+                    >
+                      <Trash2Icon size={16} />
+                      <span className="text-sm">Delete</span>
+                    </button>
+                  </li>
                 </ul>
-              </div>
+              )}
             </div>
           )}
 
@@ -247,7 +260,7 @@ const ProjectCard = ({
                 className="text-xs justify-center"
                 onClick={() => {
                   navigate(`/result/${gen.id}`);
-                  scroll(0, 0);
+                  window.scrollTo(0, 0);
                 }}
               >
                 View Details

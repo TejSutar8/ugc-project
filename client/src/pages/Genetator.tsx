@@ -39,29 +39,38 @@ const Genetator = () => {
 
   const handelGenerate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) return toast("Please Login to generate");
+    if (!user) return toast.error("Please Login to generate");
 
     if (!productImage || !modelImage || !name || !productName || !aspectRatio)
-      return toast("Please fill all the required fields");
+      return toast.error("Please fill all the required fields");
+    
     try {
       setIsGenerating(true);
+      console.log("Starting generation...");
+      
       const formData = new FormData();
       formData.append("name", name);
       formData.append("productName", productName);
       formData.append("productDescription", productDescription);
       formData.append("userPrompt", userPrompt);
       formData.append("aspectRatio", aspectRatio);
-      formData.append("Image", productImage);
-      formData.append("Image", modelImage);
+      formData.append("images", productImage);
+      formData.append("images", modelImage);
 
       const token = await getToken();
 
+      console.log("Sending API request...");
       const { data } = await api.post("/api/project/create", formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      toast.success(data.message);
-      navigate("result/" + data.projectId);
+      
+      console.log("API response:", data);
+      
+      // Navigate immediately - generation happens in background
+      navigate("/result/" + data.projectId);
+      toast.success("Redirecting to result page...");
     } catch (error: any) {
+      console.error("Generation error:", error);
       setIsGenerating(false);
       toast.error(error?.response?.data?.message || error.message);
     }

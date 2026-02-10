@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGC Project - Architecture Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .diagram-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .diagram-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .mermaid {
+            text-align: center;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .export-btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 10px 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .export-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .instructions {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .instructions ol {
+            line-height: 1.8;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .tech-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .instructions, .export-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 UGC Image & Video Generator</h1>
+        <p class="subtitle">System Architecture Diagrams</p>
+
+        <div class="instructions">
+            <h3>📥 How to Export Diagrams as Images</h3>
+            <ol>
+                <li><strong>Screenshot Method:</strong> Use Windows Snipping Tool (Win + Shift + S) to capture each diagram</li>
+                <li><strong>Browser Export:</strong> Right-click on diagram → "Save image as..."</li>
+                <li><strong>Print to PDF:</strong> Press Ctrl+P → Save as PDF → Extract images from PDF</li>
+                <li><strong>VS Code:</strong> Install "Markdown Preview Mermaid Support" extension → Open .md files → Right-click diagram → Export</li>
+            </ol>
+        </div>
+
+        <div class="diagram-card">
+            <h2 class="diagram-title">1️⃣ System Architecture - Component Overview</h2>
+            <p><strong>Purpose:</strong> Shows all major components and their relationships</p>
+            <div class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        A[React Frontend<br/>Vite + TypeScript]
+        A1[Pages: Home, Generator, Result]
+        A2[Components: Upload, Cards]
+    end
+
+    subgraph "API Layer"
+        B[Express Server<br/>Node.js + TypeScript]
+        B1[Auth Middleware<br/>JWT Validation]
+        B2[Project Routes]
+        B3[User Routes]
+        B4[Multer Upload]
+    end
+
+    subgraph "External Services"
+        C[Clerk Auth<br/>Authentication]
+        D[Google Gemini AI<br/>Image Generation]
+        E[Google Veo AI<br/>Video Generation]
+        F[Cloudinary<br/>Media Storage]
+        G[Sentry<br/>Error Monitoring]
+    end
+
+    subgraph "Database Layer"
+        H[(PostgreSQL<br/>Neon Serverless)]
+        H1[User Table]
+        H2[Project Table]
+        I[Prisma ORM]
+    end
+
+    subgraph "Generated Content"
+        J[Generated Images<br/>PNG/JPG]
+        K[Generated Videos<br/>MP4 720p]
+    end
+
+    A --> A1
+    A --> A2
+    A1 --> |HTTP/REST| B
+    A2 --> |Upload Files| B
+
+    B --> B1
+    B --> B2
+    B --> B3
+    B --> B4
+
+    B1 --> |Verify Token| C
+    B2 --> |Generate| D
+    B2 --> |Generate| E
+    B2 --> |Upload| F
+    B --> |Monitor| G
+
+    B --> I
+    I --> H
+    H --> H1
+    H --> H2
+
+    D --> |AI Image| J
+    E --> |AI Video| K
+    J --> F
+    K --> F
+    F --> |Secure URLs| A
+
+    style A fill:#61dafb,stroke:#333,stroke-width:2px
+    style B fill:#68a063,stroke:#333,stroke-width:2px
+    style H fill:#336791,stroke:#333,stroke-width:2px
+    style D fill:#4285f4,stroke:#333,stroke-width:2px
+    style E fill:#ea4335,stroke:#333,stroke-width:2px
+    style F fill:#3448c5,stroke:#333,stroke-width:2px
+            </div>
+            
+            <div class="tech-stack">
+                <div class="tech-item">React 19</div>
+                <div class="tech-item">Node.js + Express</div>
+                <div class="tech-item">PostgreSQL</div>
+                <div class="tech-item">Google Gemini AI</div>
+                <div class="tech-item">Google Veo AI</div>
+                <div class="tech-item">Cloudinary</div>
+                <div class="tech-item">Clerk Auth</div>
+                <div class="tech-item">Prisma ORM</div>
+            </div>
+        </div>
+
+        <div class="diagram-card">
+            <h2 class="diagram-title">2️⃣ Data Flow - Image & Video Generation</h2>
+            <p><strong>Purpose:</strong> Detailed sequence of operations for image and video generation</p>
+            <div class="mermaid">
+sequenceDiagram
+    participant U as User/Browser
+    participant F as React Frontend
+    participant A as Express API
+    participant Auth as Clerk Auth
+    participant DB as PostgreSQL
+    participant AI as Google Gemini
+    participant VEO as Google Veo
+    participant CDN as Cloudinary
+
+    Note over U,CDN: Image Generation Flow
+    
+    U->>F: Upload 2 images + prompt
+    F->>F: Validate files (max 5MB each)
+    
+    F->>A: POST /api/project/create<br/>(multipart/form-data)
+    A->>Auth: Verify JWT token
+    Auth-->>A: User ID validated
+    
+    A->>DB: Check user credits >= 5
+    DB-->>A: Credits available
+    
+    A->>DB: Deduct 5 credits
+    A->>DB: Create project (isGenerating=true)
+    DB-->>A: Project ID
+    
+    A-->>F: 201 Created {projectId}
+    F->>F: Navigate to /result/:projectId
+    
+    Note over F,DB: Async Background Generation
+    
+    F->>A: GET /api/user/projects/:id<br/>(Poll every 5s)
+    A->>DB: Fetch project
+    DB-->>A: {isGenerating: true, generatedImage: null}
+    A-->>F: Project status
+    
+    par Background Image Generation
+        A->>A: Load images to base64
+        A->>AI: generateContent()<br/>(2 images + prompt)
+        AI->>AI: AI model processing<br/>(20-45 seconds)
+        AI-->>A: Generated image (base64)
+        A->>CDN: Upload image
+        CDN-->>A: Secure URL
+        A->>DB: Update project<br/>(generatedImage=url, isGenerating=false)
+    end
+    
+    Note over F,DB: Polling Continues
+    
+    F->>A: GET /api/user/projects/:id
+    A->>DB: Fetch project
+    DB-->>A: {isGenerating: false, generatedImage: url}
+    A-->>F: ✅ Image ready!
+    F->>F: Display image + success toast
+    
+    Note over U,CDN: Video Generation Flow
+    
+    U->>F: Click "Generate Video"
+    F->>A: POST /api/project/video<br/>{projectId}
+    
+    A->>Auth: Verify JWT token
+    Auth-->>A: User ID validated
+    
+    A->>DB: Check credits >= 10
+    DB-->>A: Credits available
+    
+    A->>DB: Deduct 10 credits
+    A->>DB: Update project (isGenerating=true)
+    
+    A->>VEO: generateContent()<br/>(prompt + config)
+    VEO->>VEO: Video generation<br/>(60-90 seconds)
+    VEO-->>A: Video file path
+    
+    A->>VEO: Download video file
+    VEO-->>A: Video buffer (MP4)
+    
+    A->>CDN: Upload video
+    CDN-->>A: Secure URL
+    
+    A->>DB: Update project<br/>(generatedVideo=url, isGenerating=false)
+    A-->>F: {videoUrl}
+    
+    F->>F: Display video + download button
+    F->>F: Show success toast
+
+    Note over U,CDN: Download & Publish Flow
+    
+    U->>F: Click "Download Image"
+    F->>CDN: Request image file
+    CDN-->>F: Image file
+    F->>U: Browser download
+    
+    U->>F: Toggle "Publish to Community"
+    F->>A: POST /api/project/publish<br/>{projectId, isPublished}
+    A->>DB: Update project.isPublished
+    DB-->>A: Updated
+    A-->>F: Success
+    F->>F: Update UI state
+            </div>
+
+            <h3 style="margin-top: 30px; color: #667eea;">Key Features:</h3>
+            <ul style="line-height: 1.8;">
+                <li><strong>Async Generation:</strong> Immediate response, background processing</li>
+                <li><strong>Smart Polling:</strong> Auto-refresh at 2s, 5s, 8s, then every 5s</li>
+                <li><strong>Credit System:</strong> 5 credits/image, 10 credits/video, 20 free on signup</li>
+                <li><strong>Error Recovery:</strong> Automatic retry, credit refunds on failure</li>
+                <li><strong>Real-time Updates:</strong> Toast notifications, loading states</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; color: white; margin-top: 40px; padding: 20px;">
+            <p>📁 Diagram files saved in: <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px;">docs/</code></p>
+            <p>• architecture-system.md • architecture-dataflow.md • diagrams.html •</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                showSequenceNumbers: true,
+                actorMargin: 50,
+                width: 150,
+                height: 65
+            }
+        });
+    </script>
+</body>
+</html>

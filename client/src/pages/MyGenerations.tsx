@@ -22,11 +22,12 @@ const MyGenerations = () => {
       const { data } = await api.get("/api/user/projects", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setGenerations(data.projects);
+      setGenerations(data.projects || []);
       setLoading(false);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error.message);
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -62,7 +63,7 @@ const MyGenerations = () => {
               key={gen.id}
               gen={gen}
               setGenerations={setGenerations}
-              forCommunity={true}
+              forCommunity={false}
             />
           ))}
         </div>

@@ -12,11 +12,12 @@ const Community = () => {
   const fetchProjects = async () => {
     try {
       const { data } = await api.get("/api/project/published");
-      setProjects(data.projects);
+      setProjects(data.projects || []);
       setLoading(false);
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -40,16 +41,25 @@ const Community = () => {
 
         {/* Projects list */}
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              gen={project}
-              setGenerations={setProjects}
-              forCommunity={true}
-            />
-          ))}
-        </div>
+        {projects.length === 0 ? (
+          <div className="text-center py-20 bg-white/5 rounded-xl border border-white/10">
+            <h3 className="text-xl font-medium mb-2">No community posts yet</h3>
+            <p className="text-gray-400 mb-6">
+              Be the first to share your creation!
+            </p>
+          </div>
+        ) : (
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                gen={project}
+                setGenerations={setProjects}
+                forCommunity={true}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -166,7 +166,10 @@ export const createProject = async (req: Request, res: Response) => {
       },
     });
 
-    res.json({ projectId: project.id });
+    res.json({
+      projectId: project.id,
+      message: "Image generated successfully!",
+    });
   } catch (error: any) {
     if (tempProjectId!) {
       // update project status and error message
