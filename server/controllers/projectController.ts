@@ -238,7 +238,7 @@ export const createVideo = async (req: Request, res: Response) => {
 
     const prompt = `make the person showcase the product which is ${project.productName} ${project.productDescription && `and Product Description: ${project.productDescription}`}`;
 
-    const model = "veo-3.1generate-preview";
+    const model = "veo-3.1-generate-preview";
 
     if (!project.generatedImage) {
       throw new Error("Generated image not found");
@@ -333,7 +333,7 @@ export const getAllPublishedProjects = async (req: Request, res: Response) => {
     const projects = await prisma.project.findMany({
       where: { isPublished: true },
     });
-    res.json(projects);
+    res.json({ projects });
   } catch (error: any) {
     Sentry.captureException(error);
     res.status(500).json({ message: error.message });
