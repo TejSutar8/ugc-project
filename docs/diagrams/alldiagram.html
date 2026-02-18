@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UGC Project - Complete Architecture Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+        .diagram-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .diagram-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        .diagram-description {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .mermaid {
+            text-align: center;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .section-heading {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+            color: #333;
+        }
+        .section-heading h2 {
+            margin: 0;
+            color: #667eea;
+        }
+        .instructions {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .instructions ol {
+            line-height: 1.8;
+        }
+        .key-features {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .key-features h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .key-features ul {
+            line-height: 1.8;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .instructions {
+                display: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .diagram-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 UGC Image & Video Generator</h1>
+        <p class="subtitle">Complete System Architecture - All 10 Diagrams</p>
+
+        <div class="instructions">
+            <h3>📥 How to Export Diagrams as Images</h3>
+            <ol>
+                <li><strong>Screenshot Method:</strong> Use Windows Snipping Tool (Win + Shift + S) to capture each diagram</li>
+                <li><strong>Browser Export:</strong> Right-click on diagram → "Save image as..."</li>
+                <li><strong>Print to PDF:</strong> Press Ctrl+P → Save as PDF → Extract images from PDF</li>
+                <li><strong>VS Code:</strong> Install "Markdown Preview Mermaid Support" extension → Open .md files → Right-click diagram → Export</li>
+            </ol>
+        </div>
+
+        <!-- Diagram 1: ER Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">1️⃣ Entity-Relationship (ER) Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the database schema and relationships between entities (User and Project tables).</p>
+            <div class="mermaid">
+erDiagram
+    USER ||--o{ PROJECT : creates
+    
+    USER {
+        string id PK "Clerk User ID"
+        string email
+        string name
+        string image "Profile picture URL"
+        int credits "Default: 20"
+        datetime createdAt
+        datetime updatedAt
+    }
+    
+    PROJECT {
+        uuid id PK
+        string userId FK "References User.id"
+        string name "Project name"
+        string productName "Product being showcased"
+        string productDescription "Optional details"
+        string userPrompt "Custom AI prompt"
+        string aspectRatio "9:16 or 16:9"
+        int targetLength "Video length in seconds"
+        string[] uploadedImages "2 Cloudinary URLs"
+        string generatedImage "AI output URL"
+        string generatedVideo "Video output URL"
+        boolean isGenerating "Processing status"
+        boolean isPublished "Community visibility"
+        string error "Error message if failed"
+        datetime createdAt
+        datetime updatedAt
+    }
+            </div>
+            <div class="key-features">
+                <h3>Key Relationships:</h3>
+                <ul>
+                    <li><strong>One-to-Many:</strong> One user can have zero or many projects</li>
+                    <li><strong>Foreign Key:</strong> PROJECT.userId references USER.id</li>
+                    <li><strong>Cascade Rule:</strong> ON DELETE CASCADE - Deleting a user deletes all their projects</li>
+                    <li><strong>Default Credits:</strong> New users get 20 free credits (5 credits/image, 10 credits/video)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 2: Use Case Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">2️⃣ Use Case Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows all possible interactions users can have with the system.</p>
+            <div class="mermaid">
+graph TB
+    subgraph "UGC Image Generator System"
+        UC1[Sign Up / Sign In]
+        UC2[View Credit Balance]
+        UC3[Upload Images]
+        UC4[Create Image Generation]
+        UC5[View Generation Result]
+        UC6[Download Generated Image]
+        UC7[Publish to Community]
+        UC8[View My Generations]
+        UC9[Delete Project]
+        UC10[Browse Community Feed]
+        UC11[Generate Video]
+        UC12[View Pricing Plans]
+        UC13[Purchase Credits]
+    end
+    
+    User((User/Guest))
+    RegisteredUser((Registered User))
+    Admin((Administrator))
+    
+    ClerkSystem[Clerk Auth System]
+    GoogleAI[Google Gemini AI]
+    Cloudinary[Cloudinary Storage]
+    
+    User --> UC1
+    User --> UC10
+    User --> UC12
+    
+    RegisteredUser --> UC2
+    RegisteredUser --> UC3
+    RegisteredUser --> UC4
+    RegisteredUser --> UC5
+    RegisteredUser --> UC6
+    RegisteredUser --> UC7
+    RegisteredUser --> UC8
+    RegisteredUser --> UC9
+    RegisteredUser --> UC11
+    RegisteredUser --> UC13
+    
+    UC1 --> ClerkSystem
+    UC3 --> Cloudinary
+    UC4 --> GoogleAI
+    UC4 --> Cloudinary
+    UC6 --> Cloudinary
+    UC7 --> UC5
+    UC11 --> GoogleAI
+    
+    Admin --> UC8
+    Admin --> UC10
+            </div>
+            <div class="key-features">
+                <h3>User Roles:</h3>
+                <ul>
+                    <li><strong>Guest User:</strong> Can view landing page, community feed, and pricing plans</li>
+                    <li><strong>Registered User:</strong> Full access to all generation and management features</li>
+                    <li><strong>Administrator:</strong> Elevated privileges for moderation and user management</li>
+                    <li><strong>External Systems:</strong> Clerk Auth, Google Gemini AI, Cloudinary Storage</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 3: Class Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">3️⃣ Class Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the class structure and relationships in the application (Object-Oriented Design).</p>
+            <div class="mermaid">
+classDiagram
+    class User {
+        +String id
+        +String email
+        +String name
+        +String image
+        +Integer credits
+        +DateTime createdAt
+        +DateTime updatedAt
+        +Project[] projects
+        +hasEnoughCredits(amount: Integer) Boolean
+        +deductCredits(amount: Integer) void
+        +addCredits(amount: Integer) void
+        +getProjects() Project[]
+        +createProject(data: ProjectData) Project
+        +deleteProject(projectId: String) void
+    }
+    
+    class Project {
+        +String id
+        +String userId
+        +String name
+        +String productName
+        +String productDescription
+        +String userPrompt
+        +String aspectRatio
+        +Integer targetLength
+        +String[] uploadedImages
+        +String generatedImage
+        +String generatedVideo
+        +Boolean isGenerating
+        +Boolean isPublished
+        +String error
+        +DateTime createdAt
+        +DateTime updatedAt
+        +User user
+        +startGeneration() void
+        +completeGeneration(imageUrl: String) void
+        +failGeneration(errorMsg: String) void
+        +togglePublish() void
+        +isComplete() Boolean
+        +hasFailed() Boolean
+    }
+    
+    class AuthService {
+        -ClerkClient clerkClient
+        +verifyToken(token: String) User
+        +getCurrentUser(request: Request) User
+        +createUser(clerkData: ClerkUser) User
+        +updateUser(userId: String, data: Object) User
+        +deleteUser(userId: String) void
+    }
+    
+    class ProjectController {
+        -PrismaClient prisma
+        -AIService aiService
+        -StorageService storage
+        +createProject(request: Request, response: Response) void
+        +createVideo(request: Request, response: Response) void
+        +deleteProject(request: Request, response: Response) void
+        +getPublishedProjects(request: Request, response: Response) void
+    }
+    
+    class UserController {
+        -PrismaClient prisma
+        +getUserCredits(request: Request, response: Response) void
+        +getAllProjects(request: Request, response: Response) void
+        +getProjectById(request: Request, response: Response) void
+        +toggleProjectPublic(request: Request, response: Response) void
+    }
+    
+    class AIService {
+        -GoogleGenAI client
+        -String apiKey
+        +generateImage(images: File[], prompt: String, config: GenerationConfig) Buffer
+        +generateVideo(prompt: String, config: VideoConfig) String
+        -loadImageToBase64(path: String, mimeType: String) Object
+        -extractImageFromResponse(response: Object) Buffer
+    }
+    
+    class StorageService {
+        -CloudinaryClient client
+        +uploadImage(file: File) String
+        +uploadImageBuffer(buffer: Buffer) String
+        +uploadVideo(file: File) String
+        +deleteImage(url: String) void
+        +deleteVideo(url: String) void
+    }
+    
+    User "1" --> "*" Project : owns
+    ProjectController --> User : manages
+    ProjectController --> Project : creates
+    UserController --> User : queries
+    UserController --> Project : queries
+    ProjectController --> AIService : uses
+    ProjectController --> StorageService : uses
+    AuthService --> User : authenticates
+            </div>
+            <div class="key-features">
+                <h3>Key Classes:</h3>
+                <ul>
+                    <li><strong>User & Project:</strong> Core domain models with business logic methods</li>
+                    <li><strong>Controllers:</strong> Handle HTTP requests and coordinate services</li>
+                    <li><strong>Services:</strong> Encapsulate business logic for AI, storage, and authentication</li>
+                    <li><strong>Middleware:</strong> Handle cross-cutting concerns like auth and file uploads</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 4: Sequence Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">4️⃣ Sequence Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the detailed sequence of interactions between components over time.</p>
+            <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant Frontend as React Frontend
+    participant API as Express API
+    participant Auth as Auth Middleware
+    participant Controller as Project Controller
+    participant DB as PostgreSQL
+    participant Storage as Cloudinary
+    participant AI as Google Gemini
+    
+    User->>Frontend: Navigate to /generate
+    Frontend->>User: Display upload form
+    
+    User->>Frontend: Upload 2 images + fill form
+    Frontend->>Frontend: Validate files (type, size)
+    
+    User->>Frontend: Click "Generate" (5 credits)
+    Frontend->>API: POST /api/project/create<br/>(multipart/form-data)
+    
+    API->>Auth: Verify JWT token
+    Auth->>Auth: Extract userId from token
+    Auth-->>API: userId validated
+    
+    API->>Controller: createProject(req, res)
+    
+    Controller->>DB: SELECT credits FROM User WHERE id=userId
+    DB-->>Controller: credits: 20
+    
+    alt Insufficient Credits
+        Controller->>Frontend: 400 Insufficient credits
+        Frontend->>User: Error toast notification
+    else Credits Available
+        Controller->>DB: UPDATE User SET credits = credits - 5
+        DB-->>Controller: Credits deducted (20→15)
+        
+        Controller->>Storage: Upload image 1
+        Storage-->>Controller: URL 1
+        Controller->>Storage: Upload image 2
+        Storage-->>Controller: URL 2
+        
+        Controller->>DB: INSERT INTO Project<br/>(isGenerating=true)
+        DB-->>Controller: Project created (projectId)
+        
+        Controller->>Frontend: 201 Created {projectId}
+        Frontend->>Frontend: Navigate to /result/:projectId
+        Frontend->>User: Show loading state
+        
+        Note over Frontend,User: Polling starts (every 5s)
+        
+        par AI Generation (Async)
+            Controller->>Controller: Load images to base64
+            Controller->>AI: generateContent()<br/>(img1, img2, prompt)
+            
+            Note over AI: Processing...<br/>20-45 seconds
+            
+            AI->>AI: Merge images with AI
+            AI-->>Controller: Generated image (base64)
+            
+            Controller->>Storage: Upload generated image
+            Storage-->>Controller: Generated URL
+            
+            Controller->>DB: UPDATE Project<br/>SET generatedImage=url,<br/>isGenerating=false
+            DB-->>Controller: Updated
+        end
+        
+        loop Polling Every 5s
+            Frontend->>API: GET /api/user/projects/:projectId
+            API->>Auth: Verify token
+            Auth-->>API: Authorized
+            API->>DB: SELECT * FROM Project WHERE id=projectId
+            DB-->>API: Project data
+            
+            alt Still Generating
+                API-->>Frontend: {isGenerating: true}
+                Frontend->>User: Show spinner + timer
+            else Generation Complete
+                API-->>Frontend: {isGenerating: false, generatedImage: url}
+                Frontend->>Frontend: Stop polling
+                Frontend->>User: Display generated image
+                Frontend->>User: Success toast
+            end
+        end
+    end
+            </div>
+            <div class="key-features">
+                <h3>Key Interactions:</h3>
+                <ul>
+                    <li><strong>Async Generation:</strong> Immediate response, background AI processing</li>
+                    <li><strong>Smart Polling:</strong> Frontend polls every 5s for generation status</li>
+                    <li><strong>Credit Management:</strong> Automatic deduction and validation before generation</li>
+                    <li><strong>Error Handling:</strong> Credits refunded on failure with error messages</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 5: Collaboration Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">5️⃣ Collaboration Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows how objects interact to accomplish specific tasks with numbered message sequences.</p>
+            <div class="mermaid">
+graph LR
+    User([User])
+    Frontend[React Frontend]
+    API[Express API]
+    Auth[Auth Service]
+    ProjectCtrl[Project Controller]
+    UserCtrl[User Controller]
+    AIService[AI Service]
+    Storage[Storage Service]
+    DB[(Database)]
+    
+    User -.1: upload images.-> Frontend
+    User -.2: click generate.-> Frontend
+    Frontend -.3: POST /create + files.-> API
+    API -.4: verifyToken().-> Auth
+    Auth -.5: userId.-> API
+    API -.6: createProject().-> ProjectCtrl
+    ProjectCtrl -.7: checkCredits().-> DB
+    DB -.8: credits value.-> ProjectCtrl
+    ProjectCtrl -.9: deductCredits().-> DB
+    DB -.10: success.-> ProjectCtrl
+    ProjectCtrl -.11: uploadImages().-> Storage
+    Storage -.12: image URLs.-> ProjectCtrl
+    ProjectCtrl -.13: createRecord().-> DB
+    DB -.14: project ID.-> ProjectCtrl
+    ProjectCtrl -.15: generateImage().-> AIService
+    AIService -.16: image buffer.-> ProjectCtrl
+    ProjectCtrl -.17: uploadResult().-> Storage
+    Storage -.18: generated URL.-> ProjectCtrl
+    ProjectCtrl -.19: updateProject().-> DB
+    DB -.20: success.-> ProjectCtrl
+    ProjectCtrl -.21: response.-> API
+    API -.22: project ID.-> Frontend
+    Frontend -.23: navigate to result.-> User
+            </div>
+            <div class="key-features">
+                <h3>Message Flow (23 Steps):</h3>
+                <ul>
+                    <li><strong>Steps 1-6:</strong> User uploads images and initiates generation</li>
+                    <li><strong>Steps 7-10:</strong> Credit validation and deduction</li>
+                    <li><strong>Steps 11-14:</strong> Upload original images and create project record</li>
+                    <li><strong>Steps 15-23:</strong> AI generation, storage, and result display</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 6: Activity Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">6️⃣ Activity Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the workflow of business processes and system operations.</p>
+            <div class="mermaid">
+flowchart TD
+    Start([User Starts Generation]) --> CheckAuth{User<br/>Authenticated?}
+    
+    CheckAuth -->|No| RedirectLogin[Redirect to Login]
+    RedirectLogin --> End1([End])
+    
+    CheckAuth -->|Yes| NavigateGen[Navigate to /generate]
+    NavigateGen --> UploadImg[Upload 2 Images]
+    
+    UploadImg --> ValidateFiles{Files Valid?<br/>Type & Size}
+    ValidateFiles -->|No| ShowError1[Show Error Message]
+    ShowError1 --> UploadImg
+    
+    ValidateFiles -->|Yes| FillForm[Fill Form Fields:<br/>Name, Product, Prompt]
+    FillForm --> SelectRatio[Select Aspect Ratio]
+    SelectRatio --> ClickGenerate[Click Generate Button]
+    
+    ClickGenerate --> CheckCredits{Credits >= 5?}
+    CheckCredits -->|No| ShowLowCredits[Show Insufficient<br/>Credits Error]
+    ShowLowCredits --> End2([End])
+    
+    CheckCredits -->|Yes| DeductCredits[Deduct 5 Credits]
+    DeductCredits --> UploadToCloud[Upload Images<br/>to Cloudinary]
+    
+    UploadToCloud --> CreateProject[Create Project Record<br/>isGenerating = true]
+    CreateProject --> RedirectResult[Redirect to<br/>/result/:projectId]
+    
+    RedirectResult --> ShowLoading[Show Loading Spinner]
+    
+    par Async AI Processing
+        CreateProject --> PrepareImages[Load Images to Base64]
+        PrepareImages --> BuildPrompt[Build AI Prompt]
+        BuildPrompt --> CallGemini[Call Google Gemini API]
+        CallGemini --> WaitAI[Wait for AI<br/>20-45 seconds]
+        WaitAI --> ReceiveResult{Generation<br/>Successful?}
+        
+        ReceiveResult -->|No| LogError[Log Error to Sentry]
+        LogError --> RefundCredits[Refund 5 Credits]
+        RefundCredits --> UpdateError[Update Project<br/>with Error Message]
+        UpdateError --> SetGeneratingFalse1[Set isGenerating = false]
+        
+        ReceiveResult -->|Yes| ExtractImage[Extract Image Buffer]
+        ExtractImage --> UploadResult[Upload Generated Image<br/>to Cloudinary]
+        UploadResult --> UpdateProject[Update Project with<br/>Generated Image URL]
+        UpdateProject --> SetGeneratingFalse2[Set isGenerating = false]
+    end
+    
+    ShowLoading --> StartPolling[Start Polling<br/>Every 5 Seconds]
+    StartPolling --> FetchStatus[Fetch Project Status]
+    FetchStatus --> CheckGenerating{isGenerating?}
+    
+    CheckGenerating -->|true| Wait5Sec[Wait 5 Seconds]
+    Wait5Sec --> FetchStatus
+    
+    CheckGenerating -->|false| CheckError{Has Error?}
+    CheckError -->|Yes| DisplayError[Display Error Message<br/>Show Refund Notice]
+    DisplayError --> End3([End])
+    
+    CheckError -->|No| DisplayImage[Display Generated Image]
+    DisplayImage --> ShowActions[Show Action Buttons:<br/>Download, Publish, Video]
+    ShowActions --> End4([End: Success])
+    
+    style Start fill:#90EE90
+    style End1 fill:#FFB6C1
+    style End2 fill:#FFB6C1
+    style End3 fill:#FFB6C1
+    style End4 fill:#90EE90
+    style CheckCredits fill:#FFE4B5
+    style CheckAuth fill:#FFE4B5
+    style ValidateFiles fill:#FFE4B5
+    style ReceiveResult fill:#FFE4B5
+            </div>
+            <div class="key-features">
+                <h3>Process Flow Highlights:</h3>
+                <ul>
+                    <li><strong>Authentication Gate:</strong> User must be logged in to generate</li>
+                    <li><strong>File Validation:</strong> Type and size checks before upload</li>
+                    <li><strong>Credit System:</strong> 5 credits deducted per image, refunded on failure</li>
+                    <li><strong>Parallel Processing:</strong> AI generation runs asynchronously while frontend polls</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 7: State Chart Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">7️⃣ State Chart Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows how objects transition between different states in response to events.</p>
+            <div class="mermaid">
+stateDiagram-v2
+    [*] --> NotCreated
+    
+    NotCreated --> Creating : User clicks Generate
+    
+    Creating --> CreditCheck : Validate user
+    
+    CreditCheck --> InsufficientCredits : Credits < 5
+    InsufficientCredits --> [*] : Show error
+    
+    CreditCheck --> CreditsDeducted : Credits >= 5
+    CreditsDeducted --> ImagesUploading : Deduct 5 credits
+    
+    ImagesUploading --> UploadFailed : Upload error
+    UploadFailed --> CreditsRefunded : Refund 5 credits
+    CreditsRefunded --> [*] : Show error
+    
+    ImagesUploading --> ProjectCreated : Upload success
+    ProjectCreated --> Generating : Call AI service
+    
+    Generating --> GenerationFailed : AI error
+    GenerationFailed --> CreditsRefunded : Refund 5 credits
+    
+    Generating --> Complete : AI success
+    Complete --> Published : User publishes
+    Complete --> VideoGenerating : User generates video
+    Complete --> Deleted : User deletes
+    
+    Published --> Unpublished : User unpublishes
+    Unpublished --> Published : User republishes
+    Unpublished --> Deleted : User deletes
+    Published --> Deleted : User deletes
+    
+    VideoGenerating --> VideoCheckCredits : Validate credits
+    VideoCheckCredits --> VideoInsufficientCredits : Credits < 10
+    VideoInsufficientCredits --> Complete : Show error
+    
+    VideoCheckCredits --> VideoCreditsDeducted : Credits >= 10
+    VideoCreditsDeducted --> VideoProcessing : Deduct 10 credits
+    
+    VideoProcessing --> VideoFailed : Veo error
+    VideoFailed --> VideoCreditsRefunded : Refund 10 credits
+    VideoCreditsRefunded --> Complete : Show error
+    
+    VideoProcessing --> VideoComplete : Veo success
+    VideoComplete --> Deleted : User deletes
+    VideoComplete --> Published : User publishes
+    
+    Deleted --> [*]
+    
+    note right of Generating
+        isGenerating = true
+        Frontend polls every 5s
+    end note
+    
+    note right of Complete
+        isGenerating = false
+        generatedImage URL stored
+        User can download
+    end note
+    
+    note right of Published
+        isPublished = true
+        Visible in community feed
+    end note
+            </div>
+            <div class="key-features">
+                <h3>Project State Lifecycle:</h3>
+                <ul>
+                    <li><strong>Creating States:</strong> NotCreated → Creating → CreditCheck → Generating</li>
+                    <li><strong>Success States:</strong> Complete → Published/VideoComplete</li>
+                    <li><strong>Failure States:</strong> InsufficientCredits, UploadFailed, GenerationFailed (with credit refunds)</li>
+                    <li><strong>Terminal State:</strong> Deleted (permanent removal)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 8: Component Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">8️⃣ Component Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the organization and dependencies between software components.</p>
+            <div class="mermaid">
+graph TB
+    subgraph "Client Application (Port 5173)"
+        UI[UI Components]
+        Pages[Page Components]
+        Services[Client Services]
+        State[State Management]
+        Router[React Router]
+        
+        Pages --> UI
+        Pages --> Services
+        Pages --> State
+        Router --> Pages
+    end
+    
+    subgraph "API Server (Port 5000)"
+        Express[Express Application]
+        Routes[API Routes]
+        Controllers[Controllers]
+        Services_BE[Services]
+        Middleware[Middleware]
+        
+        Express --> Middleware
+        Middleware --> Routes
+        Routes --> Controllers
+        Controllers --> Services_BE
+    end
+    
+    subgraph "Data Layer"
+        Prisma[Prisma ORM]
+        Models[Database Models]
+        
+        Services_BE --> Prisma
+        Prisma --> Models
+    end
+    
+    subgraph "External Services"
+        Clerk_Auth[Clerk Authentication]
+        Google_AI[Google Gemini AI]
+        Cloudinary_Storage[Cloudinary Storage]
+        Sentry_Monitoring[Sentry Monitoring]
+    end
+    
+    subgraph "Infrastructure"
+        PostgreSQL[PostgreSQL]
+        CDN[Cloudinary CDN]
+    end
+    
+    Services -->|HTTP/REST| Express
+    UI -->|Auth UI| Clerk_Auth
+    Services_BE -->|Auth API| Clerk_Auth
+    Services_BE -->|Generate| Google_AI
+    Services_BE -->|Upload| Cloudinary_Storage
+    Services_BE -->|Log Errors| Sentry_Monitoring
+    Prisma -->|SQL| PostgreSQL
+    UI -->|Load Media| CDN
+    Cloudinary_Storage --> CDN
+    
+    style UI fill:#61dafb
+    style Express fill:#68a063
+    style PostgreSQL fill:#336791
+    style Google_AI fill:#4285f4
+    style Clerk_Auth fill:#6c47ff
+            </div>
+            <div class="key-features">
+                <h3>Component Layers:</h3>
+                <ul>
+                    <li><strong>Client Layer:</strong> React app with pages, components, services (Port 5173)</li>
+                    <li><strong>API Layer:</strong> Express server with routes, controllers, middleware (Port 5000)</li>
+                    <li><strong>Data Layer:</strong> Prisma ORM connecting to PostgreSQL database</li>
+                    <li><strong>External Services:</strong> Clerk Auth, Google AI, Cloudinary, Sentry</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 9: Deployment Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">9️⃣ Deployment Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows the physical architecture of the system including hardware, software, and network topology.</p>
+            <div class="mermaid">
+graph TB
+    subgraph "User Devices"
+        Desktop[Desktop Browser<br/>Chrome/Firefox/Safari]
+        Mobile[Mobile Browser<br/>iOS/Android]
+        Tablet[Tablet Browser]
+    end
+    
+    subgraph "CDN Layer"
+        VercelCDN[Vercel Edge Network<br/>Global CDN<br/>300+ Locations]
+        CloudinaryCDN[Cloudinary CDN<br/>Media Delivery<br/>Automatic Optimization]
+    end
+    
+    subgraph "Frontend Hosting - Vercel"
+        direction TB
+        VercelNode1[Edge Node 1<br/>React App]
+        VercelNode2[Edge Node 2<br/>React App]
+        VercelNode3[Edge Node 3<br/>React App]
+        VercelLB[Load Balancer]
+        
+        VercelLB --> VercelNode1
+        VercelLB --> VercelNode2
+        VercelLB --> VercelNode3
+    end
+    
+    subgraph "Backend Hosting - Railway"
+        direction TB
+        RailwayContainer[Docker Container<br/>Node.js 22<br/>Express Server<br/>Port 5000]
+        RailwayEnv[Environment Variables<br/>Secrets Manager]
+        RailwayLogs[Railway Logs<br/>stdout/stderr]
+        
+        RailwayEnv --> RailwayContainer
+        RailwayContainer --> RailwayLogs
+    end
+    
+    subgraph "Database - Neon PostgreSQL"
+        direction TB
+        NeonPrimary[Primary Instance<br/>PostgreSQL 16<br/>Auto-scaling]
+        NeonReplica1[Read Replica 1]
+        NeonReplica2[Read Replica 2]
+        NeonBackup[Automated Backups<br/>Point-in-time Recovery]
+        
+        NeonPrimary -.Replicate.-> NeonReplica1
+        NeonPrimary -.Replicate.-> NeonReplica2
+        NeonPrimary -.Backup.-> NeonBackup
+    end
+    
+    subgraph "External Services - Cloud"
+        direction TB
+        ClerkServers[Clerk Auth Servers<br/>JWT Token Service<br/>User Management]
+        GoogleAI[Google Cloud AI<br/>Gemini 3 Pro<br/>Veo 3.1]
+        CloudinaryStorage[Cloudinary Storage<br/>Image/Video Processing<br/>Transformation API]
+        SentryMonitoring[Sentry Cloud<br/>Error Tracking<br/>Performance Monitoring]
+    end
+    
+    Desktop --> VercelCDN
+    Mobile --> VercelCDN
+    Tablet --> VercelCDN
+    
+    VercelCDN --> VercelLB
+    
+    VercelNode1 -.API Calls.-> RailwayContainer
+    VercelNode2 -.API Calls.-> RailwayContainer
+    VercelNode3 -.API Calls.-> RailwayContainer
+    
+    VercelNode1 -.Load Media.-> CloudinaryCDN
+    VercelNode2 -.Load Media.-> CloudinaryCDN
+    VercelNode3 -.Load Media.-> CloudinaryCDN
+    
+    Desktop -.Auth UI.-> ClerkServers
+    Mobile -.Auth UI.-> ClerkServers
+    
+    RailwayContainer -->|SQL Queries| NeonPrimary
+    RailwayContainer -->|Verify Token| ClerkServers
+    RailwayContainer -->|Generate Image| GoogleAI
+    RailwayContainer -->|Upload Files| CloudinaryStorage
+    RailwayContainer -->|Log Errors| SentryMonitoring
+    
+    CloudinaryStorage --> CloudinaryCDN
+    
+    style Desktop fill:#61dafb
+    style VercelCDN fill:#000
+    style RailwayContainer fill:#7733ff
+    style NeonPrimary fill:#00e699
+    style ClerkServers fill:#6c47ff
+    style GoogleAI fill:#4285f4
+    style CloudinaryStorage fill:#3448c5
+    style SentryMonitoring fill:#362d59
+            </div>
+            <div class="key-features">
+                <h3>Deployment Infrastructure:</h3>
+                <ul>
+                    <li><strong>Frontend:</strong> Vercel Edge Network with global CDN (300+ locations)</li>
+                    <li><strong>Backend:</strong> Railway Docker container (Node.js 22, Port 5000)</li>
+                    <li><strong>Database:</strong> Neon PostgreSQL 16 with auto-scaling and replicas</li>
+                    <li><strong>Cloud Services:</strong> Clerk, Google AI, Cloudinary, Sentry</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diagram 10: Package Diagram -->
+        <div class="diagram-card">
+            <h2 class="diagram-title">🔟 Package Diagram</h2>
+            <p class="diagram-description"><strong>Purpose:</strong> Shows how the system is organized into packages and the dependencies between them.</p>
+            <div class="mermaid">
+graph TB
+    subgraph "Root Workspace"
+        subgraph "Client Package - client/"
+            ClientSrc[src/]
+            ClientPages[pages/]
+            ClientComponents[components/]
+            ClientConfigs[configs/]
+            ClientTypes[types/]
+            ClientAssets[assets/]
+            
+            ClientSrc --> ClientPages
+            ClientSrc --> ClientComponents
+            ClientSrc --> ClientConfigs
+            ClientSrc --> ClientTypes
+            ClientSrc --> ClientAssets
+            
+            ClientPages --> ClientComponents
+            ClientPages --> ClientConfigs
+        end
+        
+        subgraph "Server Package - server/"
+            ServerRoutes[routes/]
+            ServerControllers[controllers/]
+            ServerMiddlewares[middlewares/]
+            ServerConfigs[configs/]
+            ServerPrisma[prisma/]
+            ServerTypes[types/]
+            
+            ServerRoutes --> ServerControllers
+            ServerRoutes --> ServerMiddlewares
+            ServerControllers --> ServerConfigs
+            ServerControllers --> ServerPrisma
+        end
+        
+        subgraph "Documentation Package - docs/"
+            DocsArchitecture[architecture-*.md]
+            DocsDiagrams[diagrams/]
+            DocsHTML[diagrams.html]
+            
+            DocsHTML -.references.-> DocsDiagrams
+        end
+        
+        subgraph "Configuration Files"
+            RootSetup[setup.ps1]
+            RootReadme[README.md]
+            RootMVP[MVP.md]
+            RootTesting[TESTING.md]
+        end
+    end
+    
+    ClientPages -.HTTP Calls.-> ServerRoutes
+    DocsArchitecture -.documents.-> ClientSrc
+    DocsArchitecture -.documents.-> ServerRoutes
+    
+    style ClientSrc fill:#61dafb
+    style ServerRoutes fill:#68a063
+    style DocsArchitecture fill:#f39c12
+    style RootSetup fill:#9b59b6
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Package</th>
+                            <th>Purpose</th>
+                            <th>Key Technologies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>client/</strong></td>
+                            <td>Frontend React application</td>
+                            <td>React 19, Vite 6, TypeScript, Tailwind</td>
+                        </tr>
+                        <tr>
+                            <td><strong>server/</strong></td>
+                            <td>Backend Express API</td>
+                            <td>Express 5, Node.js 22, Prisma, TypeScript</td>
+                        </tr>
+                        <tr>
+                            <td><strong>docs/</strong></td>
+                            <td>System documentation & diagrams</td>
+                            <td>Markdown, Mermaid, HTML</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Root Config</strong></td>
+                            <td>Setup scripts & project metadata</td>
+                            <td>PowerShell, Markdown</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="key-features">
+                <h3>Package Dependencies:</h3>
+                <ul>
+                    <li><strong>Client → Server:</strong> HTTP/REST API calls for all business logic</li>
+                    <li><strong>Server → Database:</strong> Prisma ORM for type-safe database access</li>
+                    <li><strong>Docs → All:</strong> Documentation references both client and server code</li>
+                    <li><strong>Monorepo Structure:</strong> Separate packages with clear boundaries</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; margin-top: 40px; padding: 20px;">
+            <h2 style="margin-bottom: 20px;">📊 Complete Diagram Collection</h2>
+            <p>All 10 software engineering diagrams for the UGC Image & Video Generator project</p>
+            <p style="margin-top: 20px;">
+                <strong>Location:</strong> <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 4px;">docs/diagrams/</code>
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 30px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>01</strong> Entity-Relationship Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>02</strong> Use Case Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>03</strong> Class Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>04</strong> Sequence Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>05</strong> Collaboration Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>06</strong> Activity Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>07</strong> State Chart Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>08</strong> Component Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>09</strong> Deployment Diagram
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                    <strong>10</strong> Package Diagram
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.9em; opacity: 0.8;">
+                Generated with ❤️ using Mermaid.js | Open in any modern browser
+            </p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                showSequenceNumbers: true,
+                actorMargin: 50,
+                width: 150,
+                height: 65,
+                diagramMarginX: 50,
+                diagramMarginY: 10
+            },
+            er: {
+                useMaxWidth: true
+            },
+            stateDiagram: {
+                useMaxWidth: true
+            },
+            classDiagram: {
+                useMaxWidth: true
+            }
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
