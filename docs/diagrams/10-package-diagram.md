@@ -77,12 +77,12 @@ graph TB
         end
         
         subgraph "Dependencies"
-            React[react@19.0.0]
-            ReactRouter[react-router-dom@7.1.1]
-            Clerk[clerk/clerk-react@6.11.0]
-            Axios[axios@1.7.9]
-            Tailwind[tailwindcss@4.1.5]
-            Framer[framer-motion@12.0.3]
+            React["react@19.0.0"]
+            ReactRouter["react-router-dom@7.1.1"]
+            Clerk["clerk/clerk-react@6.11.0"]
+            Axios["axios@1.7.9"]
+            Tailwind["tailwindcss@4.1.5"]
+            Framer["framer-motion@12.0.3"]
             
             App --> React
             Pages --> ReactRouter
@@ -280,36 +280,36 @@ graph TB
 ```mermaid
 graph LR
     subgraph "Core Dependencies"
-        React[react@19.0.0]
-        ReactDOM[react-dom@19.0.0]
+        React["react@19.0.0"]
+        ReactDOM["react-dom@19.0.0"]
     end
     
     subgraph "Routing"
-        ReactRouter[react-router-dom@7.1.1]
+        ReactRouter["react-router-dom@7.1.1"]
     end
     
     subgraph "State & Data"
-        Axios[axios@1.7.9]
+        Axios["axios@1.7.9"]
     end
     
     subgraph "Authentication"
-        Clerk[clerk/clerk-react@6.11.0]
+        Clerk["clerk/clerk-react@6.11.0"]
     end
     
     subgraph "UI & Styling"
-        Tailwind[tailwindcss@4.1.5]
-        Framer[framer-motion@12.0.3]
+        Tailwind["tailwindcss@4.1.5"]
+        Framer["framer-motion@12.0.3"]
     end
     
     subgraph "Utilities"
-        Lucide[lucide-react@0.469.0]
-        Sonner[sonner@1.7.3]
+        Lucide["lucide-react@0.469.0"]
+        Sonner["sonner@1.7.3"]
     end
     
     subgraph "Build Tools"
-        Vite[vite@6.0.7]
-        TypeScript[typescript@5.7.3]
-        ESLint[eslint@9.18.0]
+        Vite["vite@6.0.7"]
+        TypeScript["typescript@5.7.3"]
+        ESLint["eslint@9.18.0"]
     end
     
     ReactDOM --> React
@@ -361,43 +361,43 @@ graph LR
 ```mermaid
 graph LR
     subgraph "Core Framework"
-        Express[express@5.0.1]
-        Node[Node.js 22]
+        Express["express@5.0.1"]
+        Node["Node.js 22"]
     end
     
     subgraph "Database"
-        Prisma[prisma/client@7.3.0]
-        PrismaAdapter[prisma/adapter-pg@7.3.0]
-        PG[pg@8.13.1]
+        Prisma["prisma/client@7.3.0"]
+        PrismaAdapter["prisma/adapter-pg@7.3.0"]
+        PG["pg@8.13.1"]
     end
     
     subgraph "Authentication"
-        ClerkSDK[clerk/express@2.4.1]
-        SVIX[svix@1.42.0]
+        ClerkSDK["clerk/express@2.4.1"]
+        SVIX["svix@1.42.0"]
     end
     
     subgraph "File Handling"
-        Multer[multer@1.4.5-lts.1]
-        Cloudinary[cloudinary@2.6.1]
+        Multer["multer@1.4.5-lts.1"]
+        Cloudinary["cloudinary@2.6.1"]
     end
     
     subgraph "AI Services"
-        GoogleGenAI[google/generative-ai@0.24.0]
+        GoogleGenAI["google/generative-ai@0.24.0"]
     end
     
     subgraph "Utilities"
-        CORS[cors@2.8.5]
-        Dotenv[dotenv@16.4.7]
+        CORS["cors@2.8.5"]
+        Dotenv["dotenv@16.4.7"]
     end
     
     subgraph "Monitoring"
-        Sentry[sentry/node@8.48.0]
-        SentryProfiling[sentry/profiling-node@8.48.0]
+        Sentry["sentry/node@8.48.0"]
+        SentryProfiling["sentry/profiling-node@8.48.0"]
     end
     
     subgraph "Build Tools"
-        TypeScript[typescript@5.7.3]
-        TSXNode[tsx@4.19.2]
+        TypeScript["typescript@5.7.3"]
+        TSXNode["tsx@4.19.2"]
     end
     
     Express --> Node
