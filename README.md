@@ -177,7 +177,7 @@ See [MVP.md](./MVP.md) for full list and roadmap.
 
 ## 📞 Support
 
-- 📧 Email: [your-email@example.com]
+- 📧 Email: [tejsutar8@gmail.com]
 - 📚 Documentation: [MVP.md](./MVP.md)
 - 🐛 Issues: [GitHub Issues]
 
