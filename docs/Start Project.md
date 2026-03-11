@@ -9,21 +9,27 @@
 
 ### 2. Dependencies Installed
 ```bash
-# In /server directory
-cd server
-npm install
-
 # In /client directory
 cd client
 npm install
-```
 
+# In /server directory
+cd server
+npm install
+```
 ### 3. Database Ready
 ```bash
 # In /server directory
-npx prisma migrate dev
 npx prisma generate
+npx prisma migrate dev
 ```
+### In /client Start
+cd client
+npm run dev
+
+### In /server Start
+cd server
+npm run server
 
 ### 4. Clerk Webhook Configured
 - [ ] Webhook endpoint added: `http://localhost:5000/api/clerk`
