@@ -36,7 +36,7 @@ flowchart TD
     
     RedirectResult --> ShowLoading[Show Loading Spinner]
     
-    par Async AI Processing
+    subgraph AsyncAI["Async AI Processing"]
         CreateProject --> PrepareImages[Load Images to Base64]
         PrepareImages --> BuildPrompt[Build AI Prompt]
         BuildPrompt --> CallGemini[Call Google Gemini API]
