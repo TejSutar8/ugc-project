@@ -1,5 +1,9 @@
 # 🧪 Testing Checklist for UGC Generator MVP
 
+## 📊 Excel Test Case Sheet
+
+- [UGC-Project-Test-Cases.xlsx](./docs/UGC-Project-Test-Cases.xlsx) — structured test cases for **Client**, **Server**, and **Docs** modules in Excel format.
+
 ## Pre-Testing Setup ✅
 
 ### 1. Environment Variables
